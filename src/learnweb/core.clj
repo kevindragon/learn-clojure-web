@@ -1,27 +1,16 @@
 (ns learnweb.core
   (:require [ring.adapter.jetty :refer [run-jetty]]
-            [clojure.string :refer [split]])
+            [compojure.core :refer [defroutes GET]]    ; (1)
+            [compojure.route :refer [not-found]])    ; (2)
   (:gen-class))
 
-(defn uri-split [str]
-  (filter #(not-empty %) (split str #"/")))    ; (1)
-
-(defn route [request]
-  (let [uri (:uri request)
-        seg (uri-split uri)]
-    (cond
-      (= uri "/") "Index page"
-      (= (first seg) "hello") (str "你好" (nth seg 1 "Oops"))
-      :else "Page not found")))    ; (2)
-
-(defn handler [request]
-  (let [uri (:uri request)
-        seg (uri-split uri)]
-    {:status 200
-     :headers {"Content-Type" "text/html; charset=utf-8"}
-     :body (route request)}))    ; (3)
+(defroutes
+  app
+  (GET "/" [] "<h1>Hello world!</h1>")
+  (GET "/hello/:name" [name] (str "Hello " name))
+  (not-found "<h1>Page not found</h1>"))    ; (3)
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (run-jetty handler {:port 3000}))
+  (run-jetty app {:port 3000}))    ; (4)
