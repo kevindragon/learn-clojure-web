@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring "1.6.3"]
                  [compojure "1.6.1"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [selmer "1.11.8"]]
   :main ^:skip-aot learnweb.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})

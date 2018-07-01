@@ -5,38 +5,20 @@
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :refer [not-found]]
             [hiccup.core :refer [html]]
-            [hiccup.page :refer [html5]])
+            [hiccup.page :refer [html5]]
+            [selmer.parser :refer [render-file]])
   (:gen-class))
-
-(def form-html
-  (html5
-    (html
-      [:body
-       [:h1 "Hello form"]
-       [:form {:action "/message" :method "post"}
-        [:div
-         [:label {:for "name"} "名字:"]
-         [:input {:type "text"
-                  :name "name"}]]
-        [:div
-         [:label {:for "message"} "消息:"]
-         [:textarea {:cols 80 :rows 5 :name "message"}]]
-        [:div
-         [:input {:type "submit" :value "提交"}]]]])))
 
 (defn show-message [params]
   (let [{name "name" message "message"} params]
-    (html5
-      (html
-        [:body
-         [:h2 name]
-         [:p message]]))))
+    (render-file "message.html" {:name name :message message})))
 
 (defroutes
   app
-  (GET "/" [] form-html)
+  (GET "/" [] (render-file "index.html" {}))
   (POST "/message" {params :params} (show-message params))
   (GET "/hello/:name" [name] (str "Hello " name))
+  (GET "/home" [] (render-file "home.html" {}))
   (not-found "<h1>Page not found</h1>"))
 
 (defn -main

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Hello form</h1>
+<form action="/message" method="post">
+  <div>
+    <label for="name">名字:</label>
+    <input name="name" type="text" />
+  </div>
+  <div>
+    <label for="message">消息:</label>
+    <textarea cols="80" name="message" rows="5"></textarea>
+  </div>
+  <div><input type="submit" value="提交" /></div>
+</form>
+{% endblock %}
